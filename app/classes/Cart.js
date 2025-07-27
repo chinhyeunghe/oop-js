@@ -14,7 +14,7 @@ class Cart {
     } 
 
     removeProduct(productId) {
-        this.items = this.items.filter(item => item.product.id != productId);
+       return this.items = this.items.filter(item => item.product.id != productId);
     }
 
     getTotalPrice() {
@@ -29,8 +29,13 @@ class Cart {
     }
 
     getListCart() {
-        return this.items;
-    }
+    return this.items.map((item) => ({
+      ...item,
+      getTotal() {
+        return item.product.price * item.quantity;
+      },
+    }));
+  }
 
     printCart() {
         console.log('🛒 Giỏ hàng hiện tại:');

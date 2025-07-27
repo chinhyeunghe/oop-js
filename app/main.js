@@ -10,7 +10,9 @@ const myCart = new Cart();
 
 function renderCartView(cart) {
   const cartView = document.querySelector("#cart-view");
-  const listCart = myCart.getListCart();
+  let listCart = cart.getListCart();
+  console.log(listCart);
+  
 
   if (listCart.length == 0) {
     cartView.innerHTML = "<p>🛒 Giỏ hàng trống.</p>";
@@ -19,12 +21,28 @@ function renderCartView(cart) {
 
   cartView.innerHTML = `
     <ul>
-    ${listCart.map(item =>`
-        <li>${item.product.name} x${item.quantity} = ${item.getTotal().toLocaleString()}đ</li>
-        `).join("")}
+    ${listCart
+      .map(
+        (item) => `
+        <li>${item.product.name} x${item.quantity} = ${item
+          .getTotal()
+          .toLocaleString()}đ <button data-rm=${item.product.id}>Xóa</button></li>
+        `
+      )
+      .join("")}
     </ul>
     <p><strong>Tổng cộng:</strong> ${cart.getTotalPrice().toLocaleString()}đ</p>
   `;
+
+  document.querySelectorAll("button[data-rm]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = parseInt(button.dataset.rm);
+      const productItem = listProduct.find((item) => item.id == id);
+      cart.removeProduct(productItem.id);
+      // show giỏ
+      renderCartView(cart);
+    });
+  });
 }
 
 function renderProductView(listProduct) {
