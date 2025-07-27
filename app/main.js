@@ -1,17 +1,63 @@
 // khởi tạo sản phẩm
-
-const p1 = new Product(1, 'Sản phẩm A', 1000);
-const p2 = new Product(2, 'Sản phẩm B', 2000);
-const p3 = new Product(3, 'Sản phẩm C', 3000);
-
+const listProduct = [
+  new Product(1, "Sản phẩm A", 1000),
+  new Product(2, "Sản phẩm B", 2000),
+  new Product(3, "Sản phẩm C", 3000),
+];
 // khởi tạo giỏ hàng
 
 const myCart = new Cart();
 
-myCart.addProduct(p1);
-myCart.addProduct(p2);
-myCart.addProduct(p3);
+function renderCartView(cart) {
+  const cartView = document.querySelector("#cart-view");
+  const listCart = myCart.getListCart();
 
-// in ra giỏ hàng
+  if (listCart.length == 0) {
+    cartView.innerHTML = "<p>🛒 Giỏ hàng trống.</p>";
+    return;
+  }
 
-myCart.printCart();
+  cartView.innerHTML = `
+    <ul>
+    ${listCart.map(item =>`
+        <li>${item.product.name} x${item.quantity} = ${item.getTotal().toLocaleString()}đ</li>
+        `).join("")}
+    </ul>
+    <p><strong>Tổng cộng:</strong> ${cart.getTotalPrice().toLocaleString()}đ</p>
+  `;
+}
+
+function renderProductView(listProduct) {
+  const listView = document.querySelector("#product-list");
+  if (Array.isArray(listProduct)) {
+    if (listProduct.length == 0) {
+      listView.innerHTML = "Không có sản phẩm nào";
+      return;
+    }
+    listProduct.forEach((product, index) => {
+      const div = document.createElement("div");
+      div.className = "product";
+
+      div.innerHTML = `<strong>${
+        product.name
+      }</strong> - ${product.price.toLocaleString()}đ
+                            <button data-id=${product.id}>Thêm vào giỏ</button>
+            `;
+      listView.appendChild(div);
+    });
+
+    // gán sự kiện nút
+
+    document.querySelectorAll("button[data-id]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = parseInt(button.dataset.id);
+        const productItem = listProduct.find((item) => item.id == id);
+        myCart.addProduct(productItem);
+        // show giỏ
+        renderCartView(myCart);
+      });
+    });
+  }
+}
+
+renderProductView(listProduct);

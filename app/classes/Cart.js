@@ -5,6 +5,7 @@ class Cart {
 
     addProduct(product) {
         const tonTai = this.items.find(item => item.product.id === product.id);
+        
         if(tonTai) {
             tonTai.quantity++;
         }else {
@@ -25,6 +26,10 @@ class Cart {
 
     clearCart() {
         this.items = [];
+    }
+
+    getListCart() {
+        return this.items;
     }
 
     printCart() {

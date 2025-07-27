@@ -1,0 +1,33 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+.product {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.product button {
+  float: right;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+#cart-view {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
